@@ -125,17 +125,15 @@ func (tc *TranslationContext) translateArrayField(value interface{}, ids map[str
 	}
 	items := value.([]interface{})
 
-	var array []string
-	array = make([]string, len(items))
+	var array []interface{}
+	array = make([]interface{}, len(items))
 
 	for i, el := range items {
 		s, isString := el.(string)
 		if isString {
 			array[i] = s
 		} else {
-			if s, ok := tc.translateLinkField(el, ids).(string); ok {
-				array[i] = s
-			}
+			array[i] = tc.translateLinkField(el, ids)
 		}
 	}
 
@@ -148,7 +146,7 @@ func (tc *TranslationContext) translateLinkField(value interface{}, ids map[stri
 	}
 	item := value.(map[string]interface{})
 	sys := item["sys"].(map[string]interface{})
-  contentType := strings.ToLower(ids[sys["id"].(string)])
+	contentType := strings.ToLower(ids[sys["id"].(string)])
 	linkType := sys["linkType"]
 	if linkType == "Entry" {
 		return contentType + "/" + sys["id"].(string) + ".md"
