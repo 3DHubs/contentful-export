@@ -164,6 +164,10 @@ func (tc *TranslationContext) translateLinkField(value interface{}, ids map[stri
 }
 
 func (tc *TranslationContext) translateDateField(value interface{}) interface{} {
+	if value == nil {
+		return value
+	}
+
 	re, err := regexp.Compile(`([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2})(\+[0-9]{2}:[0-9]{2})?`) // want to know what is in front of 'at'
 	if err != nil {
 		fmt.Println(err)
